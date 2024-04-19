@@ -15,7 +15,8 @@ else
     CONTAINER_BRIDGE_INTERFACE=enp176s0
     IDS_USERNAME=testuser
     IDS_PASSWORD=testpw
-    USBPORT=4
+    PORT_USB="004"
+    MEMORY_USB_BUFFER=1000
 fi
 
 unset hostname
