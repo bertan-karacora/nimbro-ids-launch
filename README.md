@@ -7,9 +7,9 @@ Install IDS Peak: sudo apt install ./ids-peak-with-ueyetl_2.8.0.0-16438_amd64.de
 Increase USB buffer size to ensure proper bandwidth (not necessarily required): sudo /usr/local/scripts/ids_set_usb_mem_size.sh
 SDK Manual: https://en.ids-imaging.com/manuals/ids-peak/ids-peak-user-manual/2.8.0/en/index.html
 
-Config file: auto funktionen ausgeschaltet, die FPS auf 25 gesetzt und binning in horizontale und vertikale mit faktor 2 gemacht (from Luis Denninger)
+Config file: auto funktionen ausgeschaltet, die FPS auf 25 gesetzt und binning in horizontale und vertikale mit faktor 2 gemacht
 
-Run xhost + on host
+For GUI: Run xhost + on host and look up docker command (mainly $DISPLAY and some other options)
 
 [24633.174699] usb 4-2: USB disconnect, device number 3
 [24640.264207] usb 4-2: new SuperSpeed USB device number 4 using xhci_hcd
