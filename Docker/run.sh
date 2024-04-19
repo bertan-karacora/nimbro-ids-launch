@@ -2,8 +2,10 @@
 
 set -euo pipefail
 
-readonly name_image="ids"
 readonly path_script="$(dirname "$(realpath -s "$0")")"
+source "$path_script/config.sh"
+
+readonly name_image="ids"
 
 usage() {
     echo "Usage:"
@@ -35,7 +37,7 @@ run() {
         --volume "$path_repo:/repos/$name_repo" \
         --volume /etc/localtime:/etc/localtime:ro \
         --volume /etc/timezone:/etc/timezone:ro \
-        --device=/dev/bus/usb/004 \
+        --device="/dev/bus/usb/00$USBPORT" \
         "$name_image"
 }
 
