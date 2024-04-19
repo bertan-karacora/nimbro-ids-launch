@@ -23,7 +23,6 @@ RUN apt-get install -y -qq --no-install-recommends \
     python3 \
     python3-pip \
     python3-venv \
-    sudo \
     tmux \
     wget
 
@@ -52,25 +51,37 @@ RUN apt-get install -y -qq --no-install-recommends \
 #     --http-password=$IDS_PASSWORD \
 #     -O- https://repo.ids-imaging.com/ids.pgp |\
 #     gpg --dearmor |\
-#     sudo tee /usr/local/share/keyrings/ids-archive-keyring.gpg >\
+#     tee /usr/local/share/keyrings/ids-archive-keyring.gpg >\
 #     /dev/null
-# RUN sudo touch /etc/apt/auth.conf.d/ids-peak-repo.conf
+# RUN touch /etc/apt/auth.conf.d/ids-peak-repo.conf
 # RUN echo "machine repo.ids-imaging.com/ubuntu login $IDS_USERNAME password $IDS_PASSWORD" |\
-#     sudo tee /etc/apt/auth.conf.d/ids-peak-repo.conf >\
+#     tee /etc/apt/auth.conf.d/ids-peak-repo.conf >\
 #     /dev/null
-# RUN sudo touch /etc/apt/sources.list.d/ids-peak-repo.list
+# RUN touch /etc/apt/sources.list.d/ids-peak-repo.list
 # RUN echo "deb [signed-by=/usr/local/share/keyrings/ids-archive-keyring.gpg] https://repo.ids-imaging.com/ubuntu jammy main" |\
-#     sudo tee /etc/apt/sources.list.d/ids-peak-repo.list >\
+#     tee /etc/apt/sources.list.d/ids-peak-repo.list >\
 #     /dev/null
+# RUN apt-get update
+# RUN apt-get install ids-peak -y
 
-# RUN sudo apt-get update
-# RUN sudo apt-get install ids-peak -y
+# Alternative: Mount archive or .deb package and install
+RUN apt-get update
+RUN apt-get install -y -qq --no-install-recommends /repos/nimbro-ids-launch/resources/ids-peak_*.deb
 
-# RUN pip install ids_peak-*-cp37-abi3-linux_*.whl /usr/local/share/ids/bindings/python/wheel/
+# Install Python dependencies
+RUN pip install \
+    numpy
 
-# Alternative: Mount archive or .deb package into container and install
-# RUN apt-get install -y -qq --no-install-recommends /repos/nimbro-ids-launch/ids-peak_2.9.0.0-48_amd64.deb
-# RUN rm ids-peak_2.9.0.0-48_amd64.deb
+# Install Python bindings (assuming Python 3.10)
+RUN pip install \
+    /usr/local/share/ids/bindings/python/wheel/ids_peak-*-cp37-abi3-linux_*.whl \
+    /usr/local/share/ids/bindings/python/wheel/ids_peak_afl-*-cp37-abi3-linux_*.whl \
+    /usr/local/share/ids/bindings/python/wheel/ids_peak_ipl-*-cp*-cp*-linux_*.whl
+
+# The buffer memory's default value of the USB file system is often too low for a multi-camera system/high resolution cameras.
+# Increase the memory value to avoid transfer losses.
+# To adjust the memory value, you must change the "usbfs_memory_mb" parameter with root privileges.
+RUN /usr/local/scripts/ids_set_usb_mem_size.sh
 
 # Cleanup
 RUN apt-get autoremove -y 
