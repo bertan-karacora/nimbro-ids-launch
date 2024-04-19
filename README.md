@@ -10,6 +10,10 @@ SDK Manual: https://en.ids-imaging.com/manuals/ids-peak/ids-peak-user-manual/2.8
 Config file: auto funktionen ausgeschaltet, die FPS auf 25 gesetzt und binning in horizontale und vertikale mit faktor 2 gemacht
 
 For GUI: Run xhost + on host and look up docker command (mainly $DISPLAY and some other options)
+export DISPLAY=:0
+
+docker_cmd="docker run --net=host -e DISPLAY=$DISPLAY --name $DOCKER_IMAGE_NAME -v $CURRENT_PATH:/mounted/$CURRENT_DIR_NAME -v $CURRENT_PATH/ids-peak_2.9.0.0-48_amd64.deb:/mounted/ids-peak_2.9.0.0-48_amd64.deb --device=/dev:/dev -it $DOCKER_IMAGE_NAME  /bin/bash"
+    # docker_cmd="docker run --net=host -e DISPLAY=$DISPLAY --name $DOCKER_IMAGE_NAME -v $CURRENT_PATH:/mounted/$CURRENT_DIR_NAME -v $CURRENT_PATH/ids-peak_2.9.0.0-48_amd64.deb:/mounted/ids-peak_2.9.0.0-48_amd64.deb --device=/dev/bus/usb/004/008 -it $DOCKER_IMAGE_NAME  /bin/bash"
 
 [24633.174699] usb 4-2: USB disconnect, device number 3
 [24640.264207] usb 4-2: new SuperSpeed USB device number 4 using xhci_hcd
@@ -21,10 +25,10 @@ For GUI: Run xhost + on host and look up docker command (mainly $DISPLAY and som
 
 Set camera parameters
 
-<!-- # RUN /usr/local/scripts/ids_set_usb_mem_size.sh -->
-
 ```bash
 cd nimbro-ids-launch
 Docker/build.sh
 Docker/run.sh
 ```
+
+Success: Loading config changes FPS from 5 to 25. Still needed USB buffer increase.
