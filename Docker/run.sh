@@ -37,7 +37,7 @@ run() {
         --volume "$path_repo:/repos/$name_repo" \
         --volume /etc/localtime:/etc/localtime:ro \
         --volume /etc/timezone:/etc/timezone:ro \
-        --device="/dev/bus/usb/00$USBPORT" \
+        --device="/dev/bus/usb/$PORT_USB" \
         "$name_image"
 }
 

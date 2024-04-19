@@ -4,6 +4,7 @@ SHELL ["/bin/bash", "-c"]
 
 ARG IDS_USERNAME
 ARG IDS_PASSWORD
+ARG MEMORY_USB_BUFFER
 ARG CONTAINER_ROS_DOMAIN_ID
 ARG CONTAINER_BRIDGE_INTERFACE
 ARG DEBIAN_FRONTEND=noninteractive
@@ -12,7 +13,7 @@ ENV ROS_DOMAIN_ID="$CONTAINER_ROS_DOMAIN_ID"
 ENV RC_INTERFACE="$CONTAINER_BRIDGE_INTERFACE"
 ENV USE_GEMINI_2L="$CONTAINER_USE_GEMINI_2L"
 
-RUN apt-get update
+RUN apt-get update -qq
 
 # Install tools
 RUN apt-get install -y -qq --no-install-recommends \
@@ -28,6 +29,7 @@ RUN apt-get install -y -qq --no-install-recommends \
 
 # Install dependencies for IDS peak
 RUN apt-get install -y -qq --no-install-recommends \
+    udev \
     libatomic1 \
     libqt5core5a \
     libqt5gui5 \
@@ -65,28 +67,30 @@ RUN apt-get install -y -qq --no-install-recommends \
 # RUN apt-get install ids-peak -y
 
 # Alternative: Mount archive or .deb package and install
-RUN apt-get update
-RUN apt-get install -y -qq --no-install-recommends /repos/nimbro-ids-launch/resources/ids-peak_*.deb
+RUN apt-get update -qq
 
-# Install Python dependencies
-RUN pip install \
-    numpy
+# TODO: Get wildcard working
+# RUN apt-get install -y -qq --no-install-recommends /repos/nimbro-ids-launch/resources/ids-peak_*.deb
 
-# Install Python bindings (assuming Python 3.10)
-RUN pip install \
-    /usr/local/share/ids/bindings/python/wheel/ids_peak-*-cp37-abi3-linux_*.whl \
-    /usr/local/share/ids/bindings/python/wheel/ids_peak_afl-*-cp37-abi3-linux_*.whl \
-    /usr/local/share/ids/bindings/python/wheel/ids_peak_ipl-*-cp*-cp*-linux_*.whl
+# # Install Python dependencies
+# RUN pip install \
+#     numpy
+
+# # Install Python bindings (assuming Python 3.10)
+# RUN pip install \
+#     /usr/local/share/ids/bindings/python/wheel/ids_peak-*-cp37-abi3-linux_*.whl \
+#     /usr/local/share/ids/bindings/python/wheel/ids_peak_afl-*-cp37-abi3-linux_*.whl \
+#     /usr/local/share/ids/bindings/python/wheel/ids_peak_ipl-*-cp310-cp310-linux_*.whl
 
 # The buffer memory's default value of the USB file system is often too low for a multi-camera system/high resolution cameras.
 # Increase the memory value to avoid transfer losses.
 # To adjust the memory value, you must change the "usbfs_memory_mb" parameter with root privileges.
-RUN /usr/local/scripts/ids_set_usb_mem_size.sh
+# RUN echo "$MEMORY_USB_BUFFER" > /sys/module/usbcore/parameters/usbfs_memory_mb
 
 # Cleanup
-RUN apt-get autoremove -y 
+RUN apt-get autoremove -y -qq
 RUN rm -rf /tmp/* /var/tmp/* 
-RUN apt-get clean 
+RUN apt-get clean -qq
 RUN rm -rf /var/lib/apt/lists/*
 
 WORKDIR /repos
