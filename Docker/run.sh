@@ -7,7 +7,7 @@ source "$path_script/config.sh"
 
 readonly name_image="ids"
 
-usage() {
+show_help() {
     echo "Usage:"
     echo "  ./run.sh"
     echo
@@ -17,8 +17,8 @@ usage() {
 
 parse_args() {
     if [ "$#" -ne 0 ]; then
-        usage
-        return 1
+        show_help
+        exit 1
     fi
 }
 

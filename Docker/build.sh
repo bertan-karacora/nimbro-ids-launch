@@ -7,7 +7,7 @@ source "$path_script/config.sh"
 
 readonly name_image="ids"
 
-usage() {
+show_help() {
     echo "Usage:"
     echo "  ./build.sh"
     echo
@@ -17,15 +17,13 @@ usage() {
 
 parse_args() {
     if [ "$#" -ne 0 ]; then
-        usage
-        return 1
+        show_help
+        exit 1
     fi
 }
 
 build() {
     docker build \
-        --build-arg IDS_USERNAME=$IDS_USERNAME \
-        --build-arg IDS_PASSWORD=$IDS_PASSWORD \
         --build-arg CONTAINER_ROS_DOMAIN_ID=$CONTAINER_ROS_DOMAIN_ID \
         --build-arg CONTAINER_BRIDGE_INTERFACE=$CONTAINER_BRIDGE_INTERFACE \
         --tag "$name_image" \

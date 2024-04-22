@@ -27,8 +27,13 @@ Set camera parameters
 
 ```bash
 cd nimbro-ids-launch
+scripts/download_resources.sh
+sudo scripts/set_usb_buffer_memory.sh 1000
+
 Docker/build.sh
 Docker/run.sh
 ```
 
 Success: Loading config changes FPS from 5 to 25. Still needed USB buffer increase.
+
+TODO: Load from sciebo script
