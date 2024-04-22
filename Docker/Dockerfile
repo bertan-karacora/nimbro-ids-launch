@@ -48,6 +48,7 @@ RUN apt-get install -y -qq --no-install-recommends \
     qtdeclarative5-dev
 
 # Install IDS peak and IDS peak genericSDK
+# TODO: Load from sciebo
 # RUN wget \
 #     --http-user=$IDS_USERNAME \
 #     --http-password=$IDS_PASSWORD \
@@ -70,7 +71,7 @@ RUN apt-get install -y -qq --no-install-recommends \
 RUN apt-get update -qq
 
 # TODO: Get wildcard working
-# RUN apt-get install -y -qq --no-install-recommends /repos/nimbro-ids-launch/resources/ids-peak_*.deb
+# RUN apt-get update -qq && apt-get install -y -qq --no-install-recommends /repos/nimbro-ids-launch/resources/ids-peak_*.deb
 
 # # Install Python dependencies
 # RUN pip install \
