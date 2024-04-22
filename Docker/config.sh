@@ -20,3 +20,4 @@ else
 fi
 
 unset hostname
+set +a
