@@ -68,6 +68,10 @@ COPY include/ids-peak_*.deb /tmp/
 RUN apt-get update -qq
 RUN apt-get install -y -qq --no-install-recommends /tmp/ids-peak_*.deb
 
+# Install Python tools
+RUN pip install \
+    ipykernel
+
 # Install Python dependencies
 RUN pip install \
     numpy
