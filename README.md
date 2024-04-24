@@ -30,3 +30,11 @@ Docker/run.sh
 Camera name
 timestamp pro image
 ros2 message calibration params
+
+For config: Check USB bus of IDS camera via:
+
+```bash
+lsusb
+```
+
+Note: It's possible to run CNN (what about something else?) directly on the camera. Not interesting for us, I guess?
