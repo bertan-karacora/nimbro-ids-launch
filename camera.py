@@ -6,16 +6,11 @@ from dataclasses import dataclass
 
 from pathlib import Path
 
-# import ids_peak.ids_peak as idsp
-# import ids_peak_ipl.ids_peak_ipl as idsp_ipl
-# import ids_peak_ipl.ids_peak_ipl_extension as idsp_extension
+import ids_peak.ids_peak as idsp
+import ids_peak_ipl.ids_peak_ipl as idsp_ipl
+import ids_peak_ipl.ids_peak_ipl_extension as idsp_extension
 
-from ids_peak import ids_peak
-from ids_peak_ipl import ids_peak_ipl
-from ids_peak import ids_peak_ipl_extension
-
-
-TARGET_PIXEL_FORMAT = ids_peak_ipl.PixelFormatName_BGRa8
+TARGET_PIXEL_FORMAT = idsp_ipl.PixelFormatName_BGRa8
 
 
 @dataclass
@@ -37,13 +32,12 @@ class Camera:
     how to record a video using the ids_peak_ipl API.
     """
 
-    def __init__(self, device_manager, interface):
+    def __init__(self, device_manager):
         self.device_manager = device_manager
 
         self._device = None
         self._datastream = None
         self._acquisition_running = False
-        self._interface = interface
         self.target_fps = 20000
         self.max_fps = 0
         self.target_gain = 1
@@ -52,9 +46,7 @@ class Camera:
 
         self.killed = False
 
-        self._interface.set_camera(self)
-
-        self.start_recording = False
+        self.video = False
 
         self._get_device()
         if not self._device:
@@ -112,8 +104,8 @@ class Camera:
     def _setup_device_and_datastream(self):
         self._datastream = self._device.DataStreams()[0].OpenDataStream()
         # Disable auto gain and auto exposure to enable custom gain in program
-        self._find_and_set_remote_device_enumeration("GainAuto", "Off")
-        self._find_and_set_remote_device_enumeration("ExposureAuto", "Off")
+        # self._find_and_set_remote_device_enumeration("GainAuto", "Off")
+        # self._find_and_set_remote_device_enumeration("ExposureAuto", "Off")
 
         # Allocate image buffer for image acquisition
         payload_size = self._node_map.FindNode("PayloadSize").Value()
@@ -148,7 +140,7 @@ class Camera:
         try:
             self._node_map.FindNode(name).SetValue(value)
         except ids_peak.Exception:
-            self._interface.warning(f"Could not set value for {name}!")
+            print(f"Could not set value for {name}!")
 
     def print(self):
         print(
@@ -188,9 +180,7 @@ class Camera:
             self.target_fps = self.max_fps
             self.set_remote_device_value("AcquisitionFrameRate", self.target_fps)
         except ids_peak.Exception:
-            self._interface.warning(
-                "Warning Unable to limit fps, " "since node AcquisitionFrameRate is not supported." "Program will continue without set limit."
-            )
+            print("Warning Unable to limit fps, " "since node AcquisitionFrameRate is not supported." "Program will continue without set limit.")
 
         # Lock parameters that should not be accessed during acquisition
         try:
@@ -281,7 +271,7 @@ class Camera:
             lost_before = data_stream_node_map.FindNode("StreamLostFrameCount").Value()
 
         except Exception as e:
-            self._interface.warning(str(e))
+            print(str(e))
             raise
 
         print("Recording...")
@@ -302,8 +292,8 @@ class Camera:
                 # NOTE: Use `ImageConverter`, since the `ConvertTo` function re-allocates
                 #       the converison buffers on every call
                 converted_ipl_image = self._image_converter.Convert(ipl_image, TARGET_PIXEL_FORMAT)
-                # Passes the image to the (QT) interface
-                self._interface.on_image_received(converted_ipl_image)
+
+                print(converted_ipl_image)
 
                 # Append image to video
                 video.Append(converted_ipl_image)
@@ -338,20 +328,31 @@ class Camera:
         # Wait until all frames are written to the file
         video.WaitUntilFrameDone(10000)
         video.Close()
-        self._interface.done_recording(stats)
+        self.done_recording(stats)
+
+    def done_recording(self, stats):
+        if stats.frames_encoded != 0:
+            print(
+                "Recording done!\n"
+                "Statistics:\n"
+                f"  Total Frames recorded: {stats.frames_encoded}\n"
+                f"  Frames dropped by video recorder: {stats.frames_video_dropped}\n"
+                f"  Frames dropped by image stream: {stats.frames_stream_dropped}\n"
+                f"  Frames lost by image stream: {stats.frames_lost_stream}\n"
+                f"  Frame rate: {stats.fps()}"
+            )
 
     def acquisition_thread(self):
         while not self.killed:
             try:
-                if self.start_recording is True:
+                if self.video is True:
                     # Start recording a 10 seconds long video
                     self.record(10)
-                    self.start_recording = False
+                    self.video = False
                 else:
-                    # Forward image to interface
                     image = self.get_data_stream_image()
-                    self._interface.on_image_received(image)
+                    print(image)
             except Exception as e:
-                self._interface.warning(str(e))
-                self.start_recording = False
-                self._interface.done_recording(RecordingStatistics(0, 0, 0, 0, 0))
+                print(str(e))
+                self.video = False
+                self.done_recording(RecordingStatistics(0, 0, 0, 0, 0))
