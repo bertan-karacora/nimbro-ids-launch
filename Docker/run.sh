@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-readonly path_script="$(dirname "$(realpath -s "$0")")"
+readonly path_script="$(dirname "$(realpath -s "$BASH_SOURCE")")"
 source "$path_script/config.sh"
 
 readonly name_image="ids"
@@ -33,12 +33,14 @@ run() {
         --interactive \
         --tty \
         --net=host \
-        --restart=unless-stopped \
+        --rm \
         --volume "$path_repo:/repos/$name_repo" \
         --volume /etc/localtime:/etc/localtime:ro \
         --volume /etc/timezone:/etc/timezone:ro \
-        --device="/dev/bus/usb/$PORT_USB" \
+        --device="/dev/bus/usb/$BUS_USB" \
         "$name_image"
+
+    # --restart=unless-stopped \
 }
 
 main() {

@@ -6,10 +6,6 @@ ARG CONTAINER_ROS_DOMAIN_ID
 ARG CONTAINER_BRIDGE_INTERFACE
 ARG DEBIAN_FRONTEND=noninteractive
 
-ENV ROS_DOMAIN_ID="$CONTAINER_ROS_DOMAIN_ID"
-ENV RC_INTERFACE="$CONTAINER_BRIDGE_INTERFACE"
-ENV USE_GEMINI_2L="$CONTAINER_USE_GEMINI_2L"
-
 RUN apt-get update -qq
 
 # Install tools
@@ -44,7 +40,12 @@ RUN apt-get install -y -qq --no-install-recommends \
     qtbase5-dev \
     qtdeclarative5-dev
 
-# Install IDS peak and IDS peak genericSDK
+# Assume package is in /include
+COPY include/ids-peak_*.deb /tmp/
+RUN apt-get update -qq
+RUN apt-get install -y -qq --no-install-recommends /tmp/ids-peak_*.deb
+
+# Alternative: Install IDS peak and IDS peak genericSDK
 # RUN wget \
 #     --http-user=$IDS_USERNAME \
 #     --http-password=$IDS_PASSWORD \
@@ -62,11 +63,6 @@ RUN apt-get install -y -qq --no-install-recommends \
 #     /dev/null
 # RUN apt-get update
 # RUN apt-get install ids-peak -y
-
-# Alternative: Download package from somewhere else and install
-COPY include/ids-peak_*.deb /tmp/
-RUN apt-get update -qq
-RUN apt-get install -y -qq --no-install-recommends /tmp/ids-peak_*.deb
 
 # Install Python tools
 RUN pip install \
@@ -89,6 +85,10 @@ RUN apt-get clean -qq
 RUN rm -rf /var/lib/apt/lists/*
 
 WORKDIR /repos
+
+ENV ROS_DOMAIN_ID="$CONTAINER_ROS_DOMAIN_ID"
+ENV RC_INTERFACE="$CONTAINER_BRIDGE_INTERFACE"
+ENV USE_GEMINI_2L="$CONTAINER_USE_GEMINI_2L"
 
 COPY include/entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
