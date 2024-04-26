@@ -78,6 +78,15 @@ RUN pip install \
     /usr/local/share/ids/bindings/python/wheel/ids_peak_afl-*-cp37-abi3-linux_*.whl \
     /usr/local/share/ids/bindings/python/wheel/ids_peak_ipl-*-cp310-cp310-linux_*.whl
 
+# Build ROS2 workspace
+RUN source /opt/ros/humble/setup.bash
+RUN git clone https://github.com/bertan-karacora/nimbro-ids-ros2.git /repos/nimbro-ids-ros2
+RUN mkdir -p /ros2_ws/src
+RUN cp /repos/nimbro-ids-ros2/camera_ids /ros2_ws/src -r
+WORKDIR /ros2_ws
+RUN colcon build
+WORKDIR /
+
 # Cleanup
 RUN apt-get autoremove -y -qq
 RUN rm -rf /tmp/* /var/tmp/* 
