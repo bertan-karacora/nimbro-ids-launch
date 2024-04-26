@@ -1,3 +1,5 @@
+# nimbro-ids-launch
+
 ## Temporary notes:
 
 Download the debian package for the SDK from the peak website: https://en.ids-imaging.com/download-details/1009698.html?os=linux&version=&bus=64&floatcalc=
@@ -26,6 +28,7 @@ Docker/run.sh
 ```
 
 <!-- TODO: Load from sciebo script -->
+<!-- TODO: Watchdog -->
 
 Camera name
 timestamp pro image
