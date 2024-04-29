@@ -1,27 +1,32 @@
 # nimbro-ids-launch
 
-## Temporary notes:
+## Links
 
-Download the debian package for the SDK from the peak website: https://en.ids-imaging.com/download-details/1009698.html?os=linux&version=&bus=64&floatcalc=
-Install potential dependencies (not necessarily required):
- sudo apt-get install libqt5core5a libqt5gui5 libqt5widgets5 libqt5multimedia5 libqt5quick5 qml-module-qtquick-window2 qml-module-qtquick2 qtbase5-dev qtdeclarative5-dev qml-module-qtquick-dialogs qml-module-qtquick-controls qml-module-qtquick-layouts qml-module-qt-labs-settings qml-module-qt-labs-folderlistmodel libusb-1.0-0 libatomic1
-Install IDS Peak: sudo apt install ./ids-peak-with-ueyetl_2.8.0.0-16438_amd64.deb
-Increase USB buffer size to ensure proper bandwidth (not necessarily required): sudo /usr/local/scripts/ids_set_usb_mem_size.sh
-SDK Manual: https://en.ids-imaging.com/manuals/ids-peak/ids-peak-user-manual/2.8.0/en/index.html
+- [IDS peak SDK](https://en.ids-imaging.com/download-details/1009698.html?os=linux&version=&bus=64)
 
-Config file: auto funktionen ausgeschaltet, die FPS auf 25 gesetzt und binning in horizontale und vertikale mit faktor 2 gemacht
+## Temporary notes
+
+Soccer config:
+
+- Auto functions disabled
+- FPS set to 25
+- Horizontal and vertical binning with factor 2
 
 <!-- For GUI:
 xhost +
 export DISPLAY=:0 -->
 
+<!-- For config: Check USB bus of IDS camera via:
+
+```bash
+lsusb
+``` -->
 
 ## Usage
 
 ```bash
 cd nimbro-ids-launch
 scripts/download_resources.sh
-sudo scripts/set_usb_buffer_memory.sh 1000
 
 Docker/build.sh
 Docker/run.sh
@@ -29,15 +34,6 @@ Docker/run.sh
 
 <!-- TODO: Load from sciebo script -->
 <!-- TODO: Watchdog -->
-
-Camera name
-timestamp pro image
-ros2 message calibration params
-
-For config: Check USB bus of IDS camera via:
-
-```bash
-lsusb
-```
-
-Note: It's possible to run CNN (what about something else?) directly on the camera. Not interesting for us, I guess?
+<!-- TODO: Camera name -->
+<!-- TODO: timestamps -->
+<!-- TODO: ros2 message params -->
