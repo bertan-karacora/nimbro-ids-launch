@@ -22,7 +22,7 @@ parse_args() {
     fi
 }
 
-run() {
+run_docker() {
     local path_repo="$(dirname "$path_script")"
     local name_repo="$(basename "$path_repo")"
 
@@ -41,9 +41,14 @@ run() {
         "$name_image"
 }
 
+setup_usb_buffer() {
+    sudo scripts/set_usb_buffer_memory.sh 1000
+}
+
 main() {
     parse_args "$@"
-    run
+    setup_usb_buffer
+    run_docker
 }
 
 main "$@"
