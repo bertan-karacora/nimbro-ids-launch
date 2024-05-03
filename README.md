@@ -2,7 +2,10 @@
 
 ## Links
 
-- [IDS peak SDK](https://en.ids-imaging.com/download-details/1009698.html?os=linux&version=&bus=64)
+- [IDS peak manual](https://en.ids-imaging.com/download-details/1009698.html?os=linux&version=&bus=64)
+- [Application notes for U3-36P1XLS Rev.1.2](https://www.1stvision.com/cameras/IDS/IDS-manuals/en/application-notes-u3-36px.html)
+- [Product website for U3-36P1XLS Rev.1.2](https://en.ids-imaging.com/store/u3-36p1xls-rev-1-2.html)
+- [IDS Camera Node implementation for ROS 2](https://github.com/bertan-karacora/nimbro-ids-ros2)
 
 ## Temporary notes
 
@@ -22,18 +25,21 @@ export DISPLAY=:0 -->
 lsusb
 ``` -->
 
+<!-- ros2 topic hz /camera_ids --window 20 -->
+
 ## Usage
 
 ```bash
 cd nimbro-ids-launch
 scripts/download_resources.sh
 
-Docker/build.sh
+Docker/build.sh --clean
 Docker/run.sh
 ```
 
 <!-- TODO: Load from sciebo script -->
 <!-- TODO: Watchdog -->
-<!-- TODO: Camera name -->
 <!-- TODO: timestamps -->
 <!-- TODO: ros2 message params -->
+<!-- TODO: Camera config -->
+<!-- TODO: Use Launch instead of run -->
