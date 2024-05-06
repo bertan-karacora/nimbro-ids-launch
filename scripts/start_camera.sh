@@ -10,7 +10,7 @@ set -u
 export GENICAM_GENTL64_PATH=/usr/lib/ids/cti
 
 main() {
-    ros2 run camera_ids publish
+    ros2 run camera_ids publish --config default
 }
 
 main "$@"
