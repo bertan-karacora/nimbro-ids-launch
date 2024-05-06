@@ -80,9 +80,7 @@ RUN pip install \
 
 # Build ROS2 workspace
 RUN source /opt/ros/humble/setup.bash
-RUN git clone https://github.com/bertan-karacora/nimbro-ids-ros2.git /repos/nimbro-ids-ros2
-RUN mkdir -p /ros2_ws/src
-RUN cp /repos/nimbro-ids-ros2/camera_ids /ros2_ws/src -r
+ADD https://github.com/bertan-karacora/nimbro-ids-ros2.git /ros2_ws/src/nimbro-ids-ros2
 WORKDIR /ros2_ws
 RUN colcon build
 WORKDIR /
