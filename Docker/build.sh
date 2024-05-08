@@ -6,7 +6,7 @@ readonly path_script="$(dirname "$(realpath -s "$0")")"
 source "$path_script/config.sh"
 
 readonly name_image="ids"
-clean=
+clean=""
 
 show_help() {
     echo "Usage:"
