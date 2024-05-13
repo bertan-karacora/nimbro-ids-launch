@@ -79,10 +79,9 @@ RUN pip install \
     /usr/local/share/ids/bindings/python/wheel/ids_peak_ipl-*-cp310-cp310-linux_*.whl
 
 # Build ROS2 workspace
-RUN source /opt/ros/humble/setup.bash
-ADD https://github.com/bertan-karacora/nimbro-ids-ros2.git /ros2_ws/src/nimbro-ids-ros2
+ADD https://github.com/bertan-karacora/nimbro_camera_ids.git /ros2_ws/src/nimbro_camera_ids
 WORKDIR /ros2_ws
-RUN colcon build
+RUN source /opt/ros/humble/setup.bash && colcon build
 WORKDIR /
 
 # Cleanup
