@@ -4,6 +4,8 @@ SHELL ["/bin/bash", "-c"]
 
 ARG CONTAINER_ROS_DOMAIN_ID
 ARG CONTAINER_BRIDGE_INTERFACE
+ARG USERNAME_GITLAB
+ARG TOKEN_GITLAB
 ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update -qq
@@ -78,9 +80,12 @@ RUN pip install \
     /usr/local/share/ids/bindings/python/wheel/ids_peak_afl-*-cp37-abi3-linux_*.whl \
     /usr/local/share/ids/bindings/python/wheel/ids_peak_ipl-*-cp310-cp310-linux_*.whl
 
+# Add explicit dependencies
+ADD "https://$USERNAME_GITLAB:$TOKEN_GITLAB@git.ais.uni-bonn.de/athome/nimbro_utils.git" /colcon_ws/src/nimbro_utils
+ADD https://github.com/bertan-karacora/nimbro_camera_ids.git /colcon_ws/src/nimbro_camera_ids
+
 # Build ROS2 workspace
-ADD https://github.com/bertan-karacora/nimbro_camera_ids.git /ros2_ws/src/nimbro_camera_ids
-WORKDIR /ros2_ws
+WORKDIR /colcon_ws
 RUN source /opt/ros/humble/setup.bash && colcon build
 WORKDIR /
 

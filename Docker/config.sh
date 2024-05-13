@@ -4,6 +4,9 @@ set -a
 
 hostname=$(hostname)
 
+USERNAME_GITLAB=athome
+TOKEN_GITLAB=bckY_h7nq4djzxXyAGSG
+
 if [[ "$hostname" == "nimbro-athome" ]]; then
     CONTAINER_ROS_DOMAIN_ID=42
     CONTAINER_BRIDGE_INTERFACE=enp176s0
