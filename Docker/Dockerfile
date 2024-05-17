@@ -14,12 +14,14 @@ RUN apt-get update -qq
 RUN apt-get install -y -qq --no-install-recommends \
     curl \
     gdb \
-    gettext \
+    gettext-base \
     git \
+    iputils-ping \
     python-is-python3 \
     python3 \
     python3-pip \
     python3-venv \
+    ros-humble-rmw-cyclonedds-cpp \
     tmux \
     wget
 
@@ -87,7 +89,7 @@ RUN git clone https://github.com/bertan-karacora/nimbro_camera_ids.git /colcon_w
 
 # Build ROS2 workspace
 WORKDIR /colcon_ws
-RUN source /opt/ros/humble/setup.bash && colcon build
+RUN source /opt/ros/humble/setup.bash && colcon build --symlink-install
 WORKDIR /
 
 # Cleanup

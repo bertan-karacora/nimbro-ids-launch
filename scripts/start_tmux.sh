@@ -2,8 +2,8 @@
 
 set -euo pipefail
 
-# export RMW_IMPLEMENTATION="rmw_cyclonedds_cpp"
-# export CYCLONEDDS_URI="$HOME/.ros/cyclonedds.xml"
+export RMW_IMPLEMENTATION="rmw_cyclonedds_cpp"
+export CYCLONEDDS_URI="$HOME/.ros/cyclonedds.xml"
 
 readonly session_name="ids"
 
@@ -17,7 +17,7 @@ start_tmux() {
 }
 
 main() {
-    # setup_dds
+    setup_dds
     start_tmux
 }
 
