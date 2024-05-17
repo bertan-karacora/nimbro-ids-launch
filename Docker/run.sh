@@ -38,6 +38,7 @@ run_docker() {
         --volume /etc/localtime:/etc/localtime:ro \
         --volume /etc/timezone:/etc/timezone:ro \
         --device="/dev/bus/usb/$BUS_USB" \
+        --device="/dev/dri/card0" \
         "$name_image"
 }
 

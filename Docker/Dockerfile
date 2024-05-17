@@ -14,6 +14,7 @@ RUN apt-get update -qq
 RUN apt-get install -y -qq --no-install-recommends \
     curl \
     gdb \
+    gettext \
     git \
     python-is-python3 \
     python3 \
@@ -102,7 +103,9 @@ ENV RC_INTERFACE="$CONTAINER_BRIDGE_INTERFACE"
 ENV USE_GEMINI_2L="$CONTAINER_USE_GEMINI_2L"
 
 COPY include/entrypoint.sh /entrypoint.sh
+COPY include/cyclonedds.xml.template /cyclonedds.xml.template
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["/bin/bash"]
 
+ENV DISPLAY :0
 ENV DEBIAN_FRONTEND teletype
