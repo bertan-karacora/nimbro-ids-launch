@@ -8,21 +8,25 @@ readonly topics=("/camera_ids/image_color" "/camera_ids/camera_info")
 readonly duration_loop=10
 readonly duration_timeout=5
 
-try_topic() {
+is_active() {
     local topic="$1"
 
-    timeout \
-        --preserve-status "$duration_timeout" \
-        ros2 topic echo --once "$topic" >/dev/null
+    local count_publishers="$(ros2 topic info "/camera_ids/image_color" | grep 'Publisher' | awk '{print $3}')"
+
+    [[ $count_publishers -ne "0" ]]
 }
 
 are_active() {
     for topic in "${topics[@]}"; do
-        if try_topic "$topic"; then
+        if is_active "$topic"; then
             echo "$topic is active."
         else
-            echo "$topic is silent."
-            return 1
+            sleep "$duration_timeout"
+            # Check a second time
+            if ! is_active "$topic"; then
+                echo "$topic is silent."
+                return 1
+            fi
         fi
     done
 
@@ -47,6 +51,7 @@ run_watchdog() {
 
         sleep "$duration_loop"
     fi
+    sleep "$duration_timeout"
 }
 
 main() {
