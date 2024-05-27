@@ -12,6 +12,7 @@
 ```bash
 cd nimbro-ids-launch
 scripts/download_resources.sh
+sudo scripts/set_usb_buffer_memory.sh 1000
 
 Docker/build.sh --clean
 Docker/run.sh
