@@ -8,6 +8,8 @@ source /colcon_ws/install/setup.bash
 
 set -u
 
+source /repos/nimbro-ids-launch/config.sh
+
 main() {
     /repos/nimbro-ids-launch/scripts/setup_dds.sh
     /repos/nimbro-ids-launch/scripts/start_watchdog_tmux.sh
