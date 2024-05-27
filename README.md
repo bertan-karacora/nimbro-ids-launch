@@ -2,10 +2,10 @@
 
 ## Links
 
-- [IDS peak manual](https://en.ids-imaging.com/download-details/1009698.html?os=linux&version=&bus=64)
-- [Application notes for U3-36P1XLS Rev.1.2](https://www.1stvision.com/cameras/IDS/IDS-manuals/en/application-notes-u3-36px.html)
-- [Product website for U3-36P1XLS Rev.1.2](https://en.ids-imaging.com/store/u3-36p1xls-rev-1-2.html)
-- [IDS Camera Node implementation for ROS 2](https://github.com/bertan-karacora/nimbro_camera_ids)
+- [Documentation and software for U3-36P1XLS-C Rev.1.2](https://en.ids-imaging.com/download-details/1009698.html?os=linux&version=&bus=64)
+- [Application notes for U3-36P1XLS-C Rev.1.2](https://www.1stvision.com/cameras/IDS/IDS-manuals/en/application-notes-u3-36px.html)
+- [Product website for U3-36P1XLS-C Rev.1.2](https://en.ids-imaging.com/store/u3-36p1xls-rev-1-2.html)
+- [Implementation of ROS 2 node](https://github.com/bertan-karacora/nimbro_camera_ids)
 
 ## Usage
 
@@ -17,7 +17,7 @@ Docker/build.sh --clean
 Docker/run.sh
 ```
 
-Adjust `Docker/config.sh`. Check USB bus of IDS camera via
+Check `Docker/config.sh`. Get the USB bus of IDS camera via
 
 ```bash
 lsusb
@@ -25,9 +25,4 @@ lsusb
 
 <!-- TODO: Load from sciebo script? -->
 <!-- TODO: Set USB buffer in run.sh or outside (needs sudo)? -->
-<!-- TODO: RMW Implementation? Adapt scripts if necessary. -->
-<!-- TODO: Watchdog -->
-<!-- TODO: What for: mkdir -p $HOME/.ros -->
-<!-- TODO: Bashrc in tmux -->
-<!-- TODO: Where set settings which config to use, which topics to watch? -->
-<!-- TODO: Launch at start like Orbbec or not?-->
+<!-- TODO: Hard-coded stuff in start_watchdog.sh  -->
