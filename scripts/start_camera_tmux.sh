@@ -4,10 +4,10 @@ set -euo pipefail
 
 source /repos/nimbro-ids-launch/config.sh
 
-readonly name_session="watchdog_ids"
+readonly session_name="ids"
 
 start_tmux() {
-    tmux new-session -d -s "$name_session" /repos/nimbro-ids-launch/scripts/watchdog.sh
+    tmux new-session -d -s "$session_name" /repos/nimbro-ids-launch/scripts/start_camera.sh
 }
 
 main() {

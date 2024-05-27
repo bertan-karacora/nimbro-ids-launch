@@ -22,9 +22,16 @@ parse_args() {
     fi
 }
 
+get_usb_bus() {
+    local bus_usb="$(lsusb | grep 'IDS' | awk '{print $2}')"
+
+    echo "$bus_usb"
+}
+
 run_docker() {
     local path_repo="$(dirname "$path_script")"
     local name_repo="$(basename "$path_repo")"
+    local bus_usb="$(get_usb_bus)"
 
     docker run \
         --name "$name_image" \
@@ -33,22 +40,17 @@ run_docker() {
         --interactive \
         --tty \
         --net=host \
-        --restart=unless-stopped \
+        --rm \
         --volume "$path_repo:/repos/$name_repo" \
         --volume /etc/localtime:/etc/localtime:ro \
         --volume /etc/timezone:/etc/timezone:ro \
-        --device="/dev/bus/usb/$BUS_USB" \
+        --device="/dev/bus/usb/$bus_usb" \
         --device="/dev/dri/card0" \
         "$name_image"
 }
 
-setup_usb_buffer() {
-    sudo scripts/set_usb_buffer_memory.sh 1000
-}
-
 main() {
     parse_args "$@"
-    setup_usb_buffer
     run_docker
 }
 
