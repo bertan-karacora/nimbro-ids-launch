@@ -2,15 +2,12 @@ FROM osrf/ros:humble-desktop-full
 
 SHELL ["/bin/bash", "-c"]
 
-ARG CONTAINER_ROS_DOMAIN_ID
-ARG CONTAINER_BRIDGE_INTERFACE
 ARG USERNAME_GITLAB
 ARG TOKEN_GITLAB
 ARG DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get update -qq
-
 # Install tools
+RUN apt-get update -qq
 RUN apt-get install -y -qq --no-install-recommends \
     curl \
     gdb \
@@ -25,7 +22,8 @@ RUN apt-get install -y -qq --no-install-recommends \
     tmux \
     wget
 
-# Install dependencies for IDS peak
+# Install dependencies
+RUN apt-get update -qq
 RUN apt-get install -y -qq --no-install-recommends \
     udev \
     libatomic1 \
@@ -45,12 +43,14 @@ RUN apt-get install -y -qq --no-install-recommends \
     qtbase5-dev \
     qtdeclarative5-dev
 
-# Assume package is in /include
+# Install IDS peak
+# Assume package is in ./include
 COPY include/ids-peak_*.deb /tmp/
 RUN apt-get update -qq
-RUN apt-get install -y -qq --no-install-recommends /tmp/ids-peak_*.deb
+RUN apt-get install -y -qq --no-install-recommends \
+    /tmp/ids-peak_*.deb
 
-# Alternative: Install IDS peak and IDS peak genericSDK
+# Alternative: Install IDS peak
 # RUN wget \
 #     --http-user=$IDS_USERNAME \
 #     --http-password=$IDS_PASSWORD \
@@ -66,8 +66,9 @@ RUN apt-get install -y -qq --no-install-recommends /tmp/ids-peak_*.deb
 # RUN echo "deb [signed-by=/usr/local/share/keyrings/ids-archive-keyring.gpg] https://repo.ids-imaging.com/ubuntu jammy main" |\
 #     tee /etc/apt/sources.list.d/ids-peak-repo.list >\
 #     /dev/null
-# RUN apt-get update
-# RUN apt-get install ids-peak -y
+# RUN apt-get update -qq
+# RUN apt-get install -y -qq --no-install-recommends \
+#     ids-peak
 
 # Install Python tools
 RUN pip install \
@@ -77,37 +78,31 @@ RUN pip install \
 RUN pip install \
     numpy
 
-# Install Python bindings (assuming Python 3.10)
+# Install Python bindings
+# Assume Python 3.10
 RUN pip install \
     /usr/local/share/ids/bindings/python/wheel/ids_peak-*-cp37-abi3-linux_*.whl \
     /usr/local/share/ids/bindings/python/wheel/ids_peak_afl-*-cp37-abi3-linux_*.whl \
     /usr/local/share/ids/bindings/python/wheel/ids_peak_ipl-*-cp310-cp310-linux_*.whl
 
-# Add explicit dependencies
+# Add explicit Python modules
 RUN git clone "https://$USERNAME_GITLAB:$TOKEN_GITLAB@git.ais.uni-bonn.de/athome/nimbro_utils.git" /colcon_ws/src/nimbro_utils
-RUN git clone https://github.com/bertan-karacora/nimbro_camera_ids.git /colcon_ws/src/nimbro_camera_ids
+ADD ./nimbro_camera_ids /colcon_ws/src/nimbro_camera_ids
 
-# Build ROS2 workspace
+# Build ROS 2 workspace using colcon
 WORKDIR /colcon_ws
-RUN source /opt/ros/humble/setup.bash && colcon build --symlink-install
+RUN source /opt/ros/humble/setup.bash && \
+    colcon build --symlink-install
 WORKDIR /
 
 # Cleanup
 RUN apt-get autoremove -y -qq
-RUN rm -rf /tmp/* /var/tmp/* 
 RUN apt-get clean -qq
-RUN rm -rf /var/lib/apt/lists/*
+RUN rm -rf /tmp/* /var/tmp/* /var/lib/apt/lists/*
 
-WORKDIR /repos
+ENV DEBIAN_FRONTEND=teletype
+ENV DISPLAY=:0
 
-ENV ROS_DOMAIN_ID="$CONTAINER_ROS_DOMAIN_ID"
-ENV RC_INTERFACE="$CONTAINER_BRIDGE_INTERFACE"
-ENV USE_GEMINI_2L="$CONTAINER_USE_GEMINI_2L"
-
-COPY include/entrypoint.sh /entrypoint.sh
-COPY include/cyclonedds.xml.template /cyclonedds.xml.template
-ENTRYPOINT ["/entrypoint.sh"]
+COPY include/start_all.sh /start_all.sh
+ENTRYPOINT ["/start_all.sh"]
 CMD ["/bin/bash"]
-
-ENV DISPLAY :0
-ENV DEBIAN_FRONTEND teletype

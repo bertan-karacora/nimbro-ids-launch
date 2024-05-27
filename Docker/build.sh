@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-readonly path_script="$(dirname "$(realpath -s "$0")")"
+readonly path_script="$(dirname "$(realpath -s "$BASH_SOURCE")")"
 source "$path_script/config.sh"
 
 readonly name_image="ids"
@@ -39,13 +39,11 @@ parse_args() {
 
 build() {
     docker build \
-        --build-arg CONTAINER_ROS_DOMAIN_ID="$CONTAINER_ROS_DOMAIN_ID" \
-        --build-arg CONTAINER_BRIDGE_INTERFACE="$CONTAINER_BRIDGE_INTERFACE" \
         --build-arg USERNAME_GITLAB="$USERNAME_GITLAB" \
         --build-arg TOKEN_GITLAB="$TOKEN_GITLAB" \
-        ${clean:+--no-cache} \
         --tag "$name_image" \
         --file "$path_script/Dockerfile" \
+        ${clean:+--no-cache} \
         "$path_script"
 }
 
