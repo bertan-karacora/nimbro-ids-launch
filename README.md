@@ -18,11 +18,7 @@ Docker/build.sh --clean
 Docker/run.sh
 ```
 
-Check `Docker/config.sh`. Get the USB bus of IDS camera via
-
-```bash
-lsusb
-```
+Note: Check `Docker/config.sh`.
 
 <!-- TODO: Load from sciebo script? -->
 <!-- TODO: Set USB buffer in run.sh or outside (needs sudo)? -->
