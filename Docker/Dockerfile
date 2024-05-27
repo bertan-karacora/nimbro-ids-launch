@@ -87,7 +87,7 @@ RUN pip install \
 
 # Add explicit Python modules
 RUN git clone "https://$USERNAME_GITLAB:$TOKEN_GITLAB@git.ais.uni-bonn.de/athome/nimbro_utils.git" /colcon_ws/src/nimbro_utils
-ADD ./nimbro_camera_ids /colcon_ws/src/nimbro_camera_ids
+RUN git clone https://github.com/bertan-karacora/nimbro_camera_ids.git /colcon_ws/src/nimbro_camera_ids
 
 # Build ROS 2 workspace using colcon
 WORKDIR /colcon_ws

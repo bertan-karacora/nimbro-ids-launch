@@ -40,7 +40,7 @@ run_docker() {
         --interactive \
         --tty \
         --net=host \
-        --rm \
+        --restart=unless-stopped \
         --volume "$path_repo:/repos/$name_repo" \
         --volume /etc/localtime:/etc/localtime:ro \
         --volume /etc/timezone:/etc/timezone:ro \
