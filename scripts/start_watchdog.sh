@@ -30,7 +30,7 @@ are_active() {
 }
 
 kill_session() {
-    tmux kill-session -t "$session_name"
+    tmux kill-session -t "$session_name" 2>/dev/null
 }
 
 run_watchdog() {
