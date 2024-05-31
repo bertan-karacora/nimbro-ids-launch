@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-readonly path_repo="$(dirname "$(dirname "$BASH_SOURCE")")"
+readonly path_repo="$(dirname "$(dirname "$(realpath "$BASH_SOURCE")")")"
 source "$path_repo/libs/nimbro_config/source_configs.sh"
 
 readonly name_session="watchdog_ids"

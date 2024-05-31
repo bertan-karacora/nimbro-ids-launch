@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-readonly path_repo="$(dirname "$(dirname "$BASH_SOURCE")")"
+readonly path_repo="$(dirname "$(dirname "$(realpath "$BASH_SOURCE")")")"
 source "$path_repo/libs/nimbro_config/source_configs.sh"
 
 readonly name_image="ids"
@@ -42,9 +42,9 @@ build() {
         --build-arg USERNAME_GITLAB="$NIMBROATHOMEDEPLOYUSER" \
         --build-arg TOKEN_GITLAB="$NIMBROATHOMEDEPLOYTOKEN" \
         --tag "$name_image" \
-        --file "$path_script/Dockerfile" \
+        --file "$path_repo/Docker/Dockerfile" \
         ${clean:+--no-cache} \
-        "$path_script"
+        "$path_repo"
 }
 
 main() {
