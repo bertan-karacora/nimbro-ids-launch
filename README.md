@@ -23,6 +23,5 @@ Note: Check `Docker/config.sh`.
 <!-- TODO: Load from sciebo script? -->
 <!-- TODO: Set USB buffer in run.sh or outside (needs sudo)? -->
 <!-- TODO: Hard-coded stuff in start_watchdog.sh -->
-<!-- TODO: Hard-coded stuff in run.sh -->
 <!-- TODO: Setup dds in nimbro_config instead of in each container. Don't pass Container Interface ID to each container where it fills a dds template file. Both the value to fill it with and the tempate are set in nimbro_config! -->
 <!-- TODO: Find out why lsusb is showing weird stuff on the robot -->
