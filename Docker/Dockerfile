@@ -44,8 +44,8 @@ RUN apt-get install -y -qq --no-install-recommends \
     qtdeclarative5-dev
 
 # Install IDS peak
-# Assume package is in ./include
-COPY include/ids-peak_*.deb /tmp/
+# Assume package is in /resources
+COPY resources/ids-peak_*.deb /tmp/
 RUN apt-get update -qq
 RUN apt-get install -y -qq --no-install-recommends \
     /tmp/ids-peak_*.deb
@@ -103,6 +103,5 @@ RUN rm -rf /tmp/* /var/tmp/* /var/lib/apt/lists/*
 ENV DEBIAN_FRONTEND=teletype
 ENV DISPLAY=:0
 
-COPY include/start_all.sh /start_all.sh
-ENTRYPOINT ["/start_all.sh"]
+ENTRYPOINT ["/repos/nimbro-ids-launch/scripts/start_all.sh"]
 CMD ["/bin/bash"]
