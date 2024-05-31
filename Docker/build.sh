@@ -2,9 +2,8 @@
 
 set -euo pipefail
 
-# See https://stackoverflow.com/questions/59895/how-do-i-get-the-directory-where-a-bash-script-is-located-from-within-the-script
-readonly path_script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
-source "$path_script_configs/nimbro_config/source_configs.sh"
+readonly path_repo="$(dirname "$(dirname "$BASH_SOURCE")")"
+source "$path_repo/libs/nimbro_config/source_configs.sh"
 
 readonly name_image="ids"
 clean=""

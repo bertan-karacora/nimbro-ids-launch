@@ -2,7 +2,8 @@
 
 set -euo pipefail
 
-source /repos/nimbro-ids-launch/nimbro_config/source_configs.sh
+readonly path_repo="$(dirname "$(dirname "$BASH_SOURCE")")"
+source "$path_repo/libs/nimbro_config/source_configs.sh"
 
 # TODO: Could this be done without hard-coding here? Add it to the config and use when launching node?
 readonly session_name="ids"
