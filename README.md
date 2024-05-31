@@ -23,4 +23,5 @@ Note: Check `Docker/config.sh`.
 <!-- TODO: Load from sciebo script? -->
 <!-- TODO: Set USB buffer in run.sh or outside (needs sudo)? -->
 <!-- TODO: Hard-coded stuff in start_watchdog.sh -->
+<!-- TODO: Hard-coded stuff in run.sh -->
 <!-- TODO: Find out why lsusb is showing weird stuff on the robot -->
