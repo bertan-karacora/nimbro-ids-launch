@@ -8,7 +8,7 @@ source /colcon_ws/install/setup.bash
 
 set -u
 
-source /repos/nimbro-ids-launch/config.sh
+source /repos/nimbro-ids-launch/nimbro_config/source_configs.sh
 
 main() {
     /repos/nimbro-ids-launch/scripts/setup_dds.sh

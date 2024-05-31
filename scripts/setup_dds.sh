@@ -2,11 +2,11 @@
 
 set -euo pipefail
 
-source /repos/nimbro-ids-launch/config.sh
+source /repos/nimbro-ids-launch/nimbro_config/source_configs.sh
 
 setup_dds() {
     mkdir -p ~/.ros
-    cat "/repos/nimbro-ids-launch/resources/cyclonedds.xml.template" | envsubst >"$CYCLONEDDS_URI"
+    cat "/repos/nimbro-ids-launch/nimbro_config/cyclonedds.xml.template" | envsubst >"$CYCLONEDDS_URI"
 }
 
 main() {

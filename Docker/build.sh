@@ -2,8 +2,9 @@
 
 set -euo pipefail
 
-readonly path_script="$(dirname "$(realpath -s "$BASH_SOURCE")")"
-source "$path_script/config.sh"
+# See https://stackoverflow.com/questions/59895/how-do-i-get-the-directory-where-a-bash-script-is-located-from-within-the-script
+readonly path_script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
+source "$path_script_configs/nimbro_config/source_configs.sh"
 
 readonly name_image="ids"
 clean=""
@@ -39,8 +40,8 @@ parse_args() {
 
 build() {
     docker build \
-        --build-arg USERNAME_GITLAB="$USERNAME_GITLAB" \
-        --build-arg TOKEN_GITLAB="$TOKEN_GITLAB" \
+        --build-arg USERNAME_GITLAB="$NIMBROATHOMEDEPLOYUSER" \
+        --build-arg TOKEN_GITLAB="$NIMBROATHOMEDEPLOYTOKEN" \
         --tag "$name_image" \
         --file "$path_script/Dockerfile" \
         ${clean:+--no-cache} \

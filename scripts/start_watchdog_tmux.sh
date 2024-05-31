@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-source /repos/nimbro-ids-launch/config.sh
+source /repos/nimbro-ids-launch/nimbro_config/source_configs.sh
 
 readonly name_session="watchdog_ids"
 

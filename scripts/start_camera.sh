@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-source /repos/nimbro-ids-launch/config.sh
+source /repos/nimbro-ids-launch/nimbro_config/source_configs.sh
 
 start_camera() {
     ros2 run nimbro_camera_ids spin

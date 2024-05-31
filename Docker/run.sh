@@ -2,9 +2,6 @@
 
 set -euo pipefail
 
-readonly path_script="$(dirname "$(realpath -s "$BASH_SOURCE")")"
-source "$path_script/config.sh"
-
 readonly name_image="ids"
 
 show_help() {
